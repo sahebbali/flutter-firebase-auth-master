@@ -29,9 +29,9 @@ class _PhoneScreenState extends State<PhoneScreen> {
   }
 
   void showSnackBar(String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(message)),
-    );
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text(message)));
   }
 
   @override
@@ -64,7 +64,7 @@ class _PhoneScreenState extends State<PhoneScreen> {
               ElevatedButton(
                 onPressed: handlePhoneSubmit,
                 style: ButtonStyle(
-                  backgroundColor: WidgetStateProperty.all(Colors.green),
+                  backgroundColor: WidgetStateProperty.all(Colors.blue),
                   minimumSize: WidgetStateProperty.all(const Size(150, 50)),
                 ),
                 child: const Text(
