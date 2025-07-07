@@ -1,3 +1,5 @@
+import 'package:firebase_auth/screens/login_email_password_screen.dart';
+import 'package:firebase_auth/screens/phone_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/screens/login_screen.dart';
 import 'package:firebase_auth/screens/signup_email_password_screen.dart';
@@ -12,15 +14,15 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(primarySwatch: Colors.blue),
       home: const LoginScreen(),
-       routes: {
-          EmailPasswordSignup.routeName: (context) =>
-              const EmailPasswordSignup(),
-          EmailPasswordLogin.routeName: (context) => const EmailPasswordLogin(),
-          PhoneScreen.routeName: (context) => const PhoneScreen(),
-        },
+      routes: {
+        EmailPasswordSignup.routeName: (context) => const EmailPasswordSignup(),
+        EmailPasswordLogin.routeName: (context) => const EmailPasswordLogin(),
+        PhoneScreen.routeName: (context) => const PhoneScreen(),
+      },
     );
   }
 }

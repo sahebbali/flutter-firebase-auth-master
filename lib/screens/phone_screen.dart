@@ -1,46 +1,81 @@
-// import 'package:firebase_auth_demo/services/firebase_auth_methods.dart';
-// import 'package:firebase_auth_demo/widgets/custom_button.dart';
-// import 'package:firebase_auth_demo/widgets/custom_textfield.dart';
-// import 'package:flutter/material.dart';
-// import 'package:provider/provider.dart';
+import 'package:flutter/material.dart';
 
-// class PhoneScreen extends StatefulWidget {
-//   static String routeName = '/phone';
-//   const PhoneScreen({Key? key}) : super(key: key);
+class PhoneScreen extends StatefulWidget {
+  static String routeName = '/phone';
+  const PhoneScreen({Key? key}) : super(key: key);
 
-//   @override
-//   State<PhoneScreen> createState() => _PhoneScreenState();
-// }
+  @override
+  State<PhoneScreen> createState() => _PhoneScreenState();
+}
 
-// class _PhoneScreenState extends State<PhoneScreen> {
-//   final TextEditingController phoneController = TextEditingController();
+class _PhoneScreenState extends State<PhoneScreen> {
+  final TextEditingController phoneController = TextEditingController();
 
-//   @override
-//   void dispose() {
-//     super.dispose();
-//     phoneController.dispose();
-//   }
+  @override
+  void dispose() {
+    phoneController.dispose();
+    super.dispose();
+  }
 
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       body: Column(
-//         mainAxisAlignment: MainAxisAlignment.center,
-//         children: [
-//           CustomTextField(
-//             controller: phoneController,
-//             hintText: 'Enter phone number',
-//           ),
-//           CustomButton(
-//             onTap: () {
-//               context
-//                   .read<FirebaseAuthMethods>()
-//                   .phoneSignIn(context, phoneController.text);
-//             },
-//             text: 'OK',
-//           ),
-//         ],
-//       ),
-//     );
-//   }
-// }
+  void handlePhoneSubmit() {
+    final phone = phoneController.text.trim();
+
+    if (phone.isEmpty) {
+      showSnackBar("Please enter a phone number");
+    } else {
+      // Simulated response
+      showSnackBar("Code sent to $phone (dummy)");
+    }
+  }
+
+  void showSnackBar(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(message)),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(24.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Text(
+                "Phone Sign In",
+                style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 24),
+
+              // Phone number input
+              TextField(
+                controller: phoneController,
+                keyboardType: TextInputType.phone,
+                decoration: const InputDecoration(
+                  hintText: 'Enter phone number',
+                  border: OutlineInputBorder(),
+                ),
+              ),
+              const SizedBox(height: 24),
+
+              // OK Button
+              ElevatedButton(
+                onPressed: handlePhoneSubmit,
+                style: ButtonStyle(
+                  backgroundColor: WidgetStateProperty.all(Colors.green),
+                  minimumSize: WidgetStateProperty.all(const Size(150, 50)),
+                ),
+                child: const Text(
+                  'OK',
+                  style: TextStyle(fontSize: 18, color: Colors.white),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
