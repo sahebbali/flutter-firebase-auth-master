@@ -1,4 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_firebase_auth/services/firebase_auth_methods.dart';
 
 class EmailPasswordSignup extends StatefulWidget {
   static String routeName = '/signup-email-password';
@@ -12,22 +14,33 @@ class _EmailPasswordSignupState extends State<EmailPasswordSignup> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
-  void signUpUser() {
-    String email = emailController.text.trim();
-    String password = passwordController.text.trim();
+  // void signUpUser() {
+  //   String email = emailController.text.trim();
+  //   String password = passwordController.text.trim();
 
-    if (email.isEmpty || password.isEmpty) {
-      showSnackBar("Email and Password cannot be empty");
-    } else {
-      // Simulate success response
-      showSnackBar("Signed up with $email (dummy)");
-    }
+  //   if (email.isEmpty || password.isEmpty) {
+  //     showSnackBar("Email and Password cannot be empty");
+  //   } else {
+  //     // Simulate success response
+  //     showSnackBar("Signed up with $email (dummy)");
+  //   }
+  // }
+
+  void signUpUser() {
+    final auth = FirebaseAuth.instance;
+    final methods = FirebaseAuthMethods(auth);
+
+    methods.signUpWithEmail(
+      email: emailController.text.trim(),
+      password: passwordController.text.trim(),
+      context: context,
+    );
   }
 
   void showSnackBar(String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(message)),
-    );
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text(message)));
   }
 
   @override
@@ -36,10 +49,7 @@ class _EmailPasswordSignupState extends State<EmailPasswordSignup> {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Text(
-            "Sign Up",
-            style: TextStyle(fontSize: 30),
-          ),
+          const Text("Sign Up", style: TextStyle(fontSize: 30)),
           SizedBox(height: MediaQuery.of(context).size.height * 0.08),
 
           // Email Input
