@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class PhoneScreen extends StatefulWidget {
   static String routeName = '/phone';
-  const PhoneScreen({Key? key}) : super(key: key);
+  const PhoneScreen({super.key});
 
   @override
   State<PhoneScreen> createState() => _PhoneScreenState();
