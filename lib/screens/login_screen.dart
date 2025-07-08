@@ -1,7 +1,7 @@
-import 'package:firebase_auth/screens/login_email_password_screen.dart';
-import 'package:firebase_auth/screens/phone_screen.dart';
-import 'package:firebase_auth/screens/signup_email_password_screen.dart';
-import 'package:firebase_auth/widgets/custom_button.dart';
+import 'package:flutter_firebase_auth/screens/login_email_password_screen.dart';
+import 'package:flutter_firebase_auth/screens/phone_screen.dart';
+import 'package:flutter_firebase_auth/screens/signup_email_password_screen.dart';
+import 'package:flutter_firebase_auth/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 
 class LoginScreen extends StatefulWidget {
