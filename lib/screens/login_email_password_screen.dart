@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_firebase_auth/services/firebase_auth_methods.dart';
 
 class EmailPasswordLogin extends StatefulWidget {
   static String routeName = '/login-email-password';
@@ -11,23 +13,45 @@ class EmailPasswordLogin extends StatefulWidget {
 class _EmailPasswordLoginState extends State<EmailPasswordLogin> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-
-  void loginUser() {
-    String email = emailController.text.trim();
-    String password = passwordController.text.trim();
+  void loginUser() async {
+    final email = emailController.text.trim();
+    final password = passwordController.text.trim();
 
     if (email.isEmpty || password.isEmpty) {
-      showSnackBar("Email and Password cannot be empty");
-    } else {
-      // Simulate login
-      showSnackBar("Logged in as $email (dummy)");
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Email and password cannot be empty")),
+      );
+      return;
+    }
+
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => const Center(child: CircularProgressIndicator()),
+    );
+
+    try {
+      final auth = FirebaseAuth.instance;
+      final methods = FirebaseAuthMethods(auth);
+
+      await methods.loginWithEmail(
+        email: email,
+        password: password,
+        context: context,
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text("Login failed: ${e.toString()}")));
+    } finally {
+      Navigator.of(context).pop(); // Close the loading dialog
     }
   }
 
   void showSnackBar(String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(message)),
-    );
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text(message)));
   }
 
   @override
@@ -36,10 +60,7 @@ class _EmailPasswordLoginState extends State<EmailPasswordLogin> {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Text(
-            "Login",
-            style: TextStyle(fontSize: 30),
-          ),
+          const Text("Login", style: TextStyle(fontSize: 30)),
           SizedBox(height: MediaQuery.of(context).size.height * 0.08),
 
           // Email Field

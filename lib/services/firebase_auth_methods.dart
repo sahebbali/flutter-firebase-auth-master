@@ -19,7 +19,10 @@ class FirebaseAuthMethods {
     required BuildContext context,
   }) async {
     try {
-      await _auth.createUserWithEmailAndPassword(email: email, password: password);
+      await _auth.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
       await sendEmailVerification(context);
       showSnackBar(context, "Signup successful. Please verify your email.");
     } on FirebaseAuthException catch (e) {
@@ -30,6 +33,30 @@ class FirebaseAuthMethods {
       } else {
         showSnackBar(context, e.message ?? "Signup failed.");
       }
+    }
+  }
+
+  // EMAIL LOGIN
+  Future<void> loginWithEmail({
+    required String email,
+    required String password,
+    required BuildContext context,
+  }) async {
+    try {
+      final userCredential = await _auth.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+
+      final user = userCredential.user!;
+      // print("User logged in: ${user.email}");
+      if (!user.emailVerified) {
+        await sendEmailVerification(context);
+        showSnackBar(context, 'Please verify your email before logging in.');
+        // Navigate to verify email screen or stay on login
+      }
+    } on FirebaseAuthException catch (e) {
+      showSnackBar(context, e.message ?? "An error occurred");
     }
   }
 
